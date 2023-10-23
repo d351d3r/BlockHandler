@@ -1,0 +1,6 @@
+# Conan dependencies
+conanbuildinfo.txt
+conaninfo.txt
+
+# Build directory
+build/

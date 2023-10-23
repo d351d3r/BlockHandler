@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  conan-install:
+    image: moex-parser:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: /bin/sh -c "cd /app/build && conan install /app --build missing"
+
+  build:
+    image: moex-parser:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    command: /bin/sh -c "cd /app/build && cmake /app && make"
