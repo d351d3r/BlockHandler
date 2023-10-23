@@ -5,3 +5,4 @@ conaninfo.txt
 # Build directory
 build/
 conan/
+.vscode/

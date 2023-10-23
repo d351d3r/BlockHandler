@@ -5,7 +5,7 @@ project(BlockHandler)
 find_package(GTest REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
-add_compile_options(-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-private-field -Wno-unused-lambda-capture -Wno-unused-local-typedefs -Wno-unused-value -Wno-unused)
+add_compile_options(-Wall -Wextra -Werror -Wconversion)
 add_compile_definitions(_LIBCPP_ENABLE_THREAD_SAFETY_ANNOTATIONS)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

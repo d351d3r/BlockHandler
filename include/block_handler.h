@@ -27,8 +27,7 @@ class BlockHandler {
     return get_block_data(block_num, buffer, buffer_size);
   }
 
-  ResponseData fetch_block_data(const std::string& hash,
-                              const std::string& filename) const {
+  ResponseData fetch_block_data(const std::string& hash) const {
     size_t block_num = get_block_number(hash);
     size_t block_size = get_block_size(hash);
     

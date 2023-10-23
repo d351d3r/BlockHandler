@@ -8,6 +8,8 @@ class BlockHandlerConan(ConanFile):
 
     def requirements(self):
         self.requires("gtest/1.14.0")
+        self.requires("openssl/3.1.3")
+
 
     def build_requirements(self):
         self.tool_requires("cmake/3.22.6")
