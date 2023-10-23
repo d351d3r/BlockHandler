@@ -4,6 +4,6 @@
         "conan": {}
     },
     "include": [
-        "/home/stdcapybara/project/cpp/DataBlocker/build/CMakePresets.json"
+        "/home/stdcapybara/project/cpp/BlockHandler/build/CMakePresets.json"
     ]
 }

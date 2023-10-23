@@ -28,20 +28,19 @@ class BlockHandler {
   }
 
   ResponseData fetch_block_data(const std::string& hash,
-                                const std::string& filename) const {
+                              const std::string& filename) const {
     size_t block_num = get_block_number(hash);
     size_t block_size = get_block_size(hash);
-    char* buffer = new char[block_size];
-    int result = get_block_data(block_num, buffer, block_size);
+    
+    std::vector<char> buffer(block_size);
+    int result = get_block_data(block_num, buffer.data(), block_size);
     if (result != 0) {
-      // Error occurred while reading block data
-      delete[] buffer;
-      return {"", ""};
+        // Error occurred while reading block data
+        return {"", ""};
     }
-    std::string data(buffer, block_size);
-    delete[] buffer;
-    return {hash, data};
-  }
+    return {hash, std::string(buffer.begin(), buffer.end())};
+}
+
 
   // Constructor that initializes the block device filename
   BlockHandler(const std::string& filename);

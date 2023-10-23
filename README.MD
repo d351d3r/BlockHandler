@@ -65,3 +65,14 @@ Execute the built `BlockHandler` binary to run the server.
 ## Note
 
 For a complete server-side protocol implementation, consider adding the network component (accepting client requests, sending responses, etc.). The provided code primarily focuses on data block processing, not network interactions. For assistance in adding the network component, refer to additional documentation or seek expert guidance.
+
+sudo apt install libgtest-dev
+python3 -m venv conan
+source conan/bin/activate
+pip install conan
+conan profile detect
+mkdir build && cd build
+conan install .. -of=. --build missing 
+
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+cmake --build .
