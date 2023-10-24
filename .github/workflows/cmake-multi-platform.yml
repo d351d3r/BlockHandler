@@ -43,26 +43,29 @@ jobs:
         sudo apt update
         sudo apt install -y libgtest-dev python3-venv
 
+        # Setup Conan
+        python3 -m venv conan
+        source conan/bin/activate
+        pip install conan
+        conan profile detect
+        conan install . --build=missing
+
     - name: Install Dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
         # Add commands to install dependencies on Windows here, if needed
 
-    - name: Setup Conan
-      run: |
+        # Setup Conan
         python3 -m venv conan
         source conan/bin/activate
         pip install conan
         conan profile detect
-    
-    - name: Install Conan Dependencies
-      run: |
         conan install . --build=missing
-        - name: Set reusable strings
-          id: strings
-          shell: bash
-          run: |
-            echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
+
+    - name: Set reusable strings
+      id: strings
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
 
     - name: Configure CMake
       run: >
