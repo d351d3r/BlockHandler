@@ -1,7 +1,7 @@
 # Conan dependencies
 conanbuildinfo.txt
 conaninfo.txt
-
+CMakeUserPresets.json
 # Build directory
 build/
 conan/
