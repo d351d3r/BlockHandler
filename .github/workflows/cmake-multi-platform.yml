@@ -1,0 +1,77 @@
+name: CMake on multiple platforms
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        build_type: [Release]
+        c_compiler: [gcc, clang, cl]
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: windows-latest
+            c_compiler: clang
+          - os: ubuntu-latest
+            c_compiler: cl
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt update
+        sudo apt install -y libgtest-dev python3-venv
+
+    - name: Install Dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Add commands to install dependencies on Windows here, if needed
+
+    - name: Setup Conan
+      run: |
+        python3 -m venv conan
+        source conan/bin/activate
+        pip install conan
+        conan profile detect
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Execute Tests
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --rerun-failed --output-on-failure
