@@ -55,7 +55,7 @@ jobs:
         # Add commands to install dependencies on Windows here, if needed
         # Setup Conan
         python3 -m venv conan
-        source conan/bin/activate
+        .\conan\bin\activate
         pip install conan
         conan profile detect
         conan install . --build=missing
