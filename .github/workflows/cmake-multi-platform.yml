@@ -42,7 +42,6 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y libgtest-dev python3-venv
-
         # Setup Conan
         python3 -m venv conan
         source conan/bin/activate
@@ -54,7 +53,6 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         # Add commands to install dependencies on Windows here, if needed
-
         # Setup Conan
         python3 -m venv conan
         source conan/bin/activate
@@ -68,15 +66,15 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
 
     - name: Configure CMake
-  run: >
-    cmake ${{ steps.strings.outputs.build-output-dir }}
-    -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-    -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-    -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-    -S ${{ github.workspace }}
+      run: >
+        cmake ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
 
     - name: Change to build directory
       run: cd ${{ steps.strings.outputs.build-output-dir }}
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release
+      run: cmake --build . --config Release
