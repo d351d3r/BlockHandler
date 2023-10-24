@@ -43,7 +43,7 @@ void BlockHandler::create_block_device() {
                              block_device_filename);
   }
 
-  for (uint64_t i = 0; i < 100; i++) {
+  for (uint64_t i = 0; i < MAX_BLOCKS; i++) {
     //   uint64_t hash = std::hash<std::string>{}("known_hash_" + std::to_string(i));
     uint64_t hash;
     if (i == 1) {
@@ -51,7 +51,7 @@ void BlockHandler::create_block_device() {
     } else {
       hash = i;
     }
-  std::vector<char>::size_type size = 512 + i;
+    std::vector<char>::size_type size = 512 + i;
     ofs.write(reinterpret_cast<char*>(&hash), sizeof(hash));
     ofs.write(reinterpret_cast<char*>(&size), sizeof(size));
     std::vector<char> data(size, static_cast<char>('A' + (i % 26)));
@@ -66,7 +66,8 @@ void BlockHandler::create_block_device() {
 
   // Check the total file size
   std::ifstream ifs(block_device_filename, std::ios::binary | std::ios::ate);
-  std::streamoff expectedTotalSize = 100 * 16;  // Metadata for each block
+  std::streamoff expectedTotalSize =
+      MAX_BLOCKS * METADATA_SIZE;  // Metadata for each block
   for (uint64_t i = 0; i < 100; i++) {
     expectedTotalSize += (512 + i);
   }
@@ -109,7 +110,7 @@ int BlockHandler::get_block_data(size_t block_num, char* buffer,
     throw std::runtime_error("Failed to open block device file " +
                              block_device_filename);
   }
-  std::streamoff offset = compute_file_offset(block_num) + 16;
+  std::streamoff offset = compute_file_offset(block_num) + METADATA_SIZE;
   ifs.seekg(offset, std::ios::beg);
   ifs.read(buffer, buffer_size);
   auto bytesRead = ifs.gcount();
@@ -135,5 +136,5 @@ std::streamoff BlockHandler::compute_file_offset(size_t block_num) const {
 }
 
 size_t BlockHandler::get_block_number(const std::string& hash) const {
-  return std::hash<std::string>{}(hash) % 100;
+  return std::hash<std::string>{}(hash) % MAX_BLOCKS;
 }

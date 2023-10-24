@@ -64,8 +64,13 @@ class BlockHandler {
   // Helper function to get block data for a given block number
   int get_block_data(size_t block_num, char* buffer, size_t buffer_size) const;
 
-  // Member variable to store the block device filename
-  std::string block_device_filename = "block_device.dat";
+  static constexpr size_t MAX_BLOCKS = 100;
+  static constexpr size_t METADATA_SIZE = 16;
+  // Constants
+  static const inline std::string DEFAULT_BLOCK_DEVICE_FILENAME = "block_device.dat";
+
+  // Member variable
+  std::string block_device_filename = DEFAULT_BLOCK_DEVICE_FILENAME;
 };
 
 #endif  // BLOCK_HANDLER_H
