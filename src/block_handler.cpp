@@ -16,21 +16,18 @@ std::vector<ResponseData> BlockHandler::handle_client_request(
   // Asynchronously fetch block data for each hash
   for (const auto& hash : hashes) {
     futures.push_back(std::async(std::launch::async, [this, hash]() {
-      size_t block_num = get_block_number(hash);
-      size_t block_size = get_block_size(hash);
+        size_t block_num = get_block_number(hash);
+        size_t block_size = get_block_size(hash);
 
-      std::string buffer(block_size, '\0');
-      if (get_block_data(block_num, &buffer[0], block_size) < 0) {
-        throw std::runtime_error("Failed to fetch block data");
-      }
+        std::vector<char> buffer(block_size);
+        if (get_block_data(block_num, buffer.data(), block_size) < 0) {
+            throw std::runtime_error("Failed to fetch block data");
+        }
 
-      if (buffer.size() != block_size) {
-        throw std::runtime_error("Mismatch in buffer size and block size");
-      }
-
-      return ResponseData{hash, buffer};
+        return ResponseData{hash, std::string(buffer.begin(), buffer.end())};
     }));
-  }
+}
+
 
   // Gather responses
   for (auto& future : futures) {
@@ -58,7 +55,7 @@ if (i == 1) {
     uint64_t size = 512 + i;
     ofs.write(reinterpret_cast<char*>(&hash), sizeof(hash));
     ofs.write(reinterpret_cast<char*>(&size), sizeof(size));
-    std::vector<char> data(size, 'A' + (i % 26));
+    std::vector<char> data(size, static_cast<char>('A' + (i % 26)));
 
     ofs.write(data.data(), size);
     if (!ofs) {
