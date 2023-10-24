@@ -44,7 +44,7 @@ void BlockHandler::create_block_device() {
                              block_device_filename);
   }
 
-  for (int i = 0; i < 100; i++) {
+  for (uint64_t i = 0; i < 100; i++) {
  //   uint64_t hash = std::hash<std::string>{}("known_hash_" + std::to_string(i));
  uint64_t hash;
 if (i == 1) {
@@ -67,11 +67,11 @@ if (i == 1) {
 
   // Check the total file size
   std::ifstream ifs(block_device_filename, std::ios::binary | std::ios::ate);
-  size_t expectedTotalSize = 100 * 16;  // Metadata for each block
-  for (int i = 0; i < 100; i++) {
+  uint64_t expectedTotalSize = 100 * 16;  // Metadata for each block
+  for (uint64_t i = 0; i < 100; i++) {
     expectedTotalSize += (512 + i);
   }
-  size_t actualTotalSize = ifs.tellg();
+  uint64_t actualTotalSize = ifs.tellg();
   if (expectedTotalSize != actualTotalSize) {
     std::cerr << "Mismatch in total file size: expected " << expectedTotalSize
               << ", but got " << actualTotalSize << "\n";
