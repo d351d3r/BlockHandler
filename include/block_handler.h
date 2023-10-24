@@ -53,13 +53,13 @@ class BlockHandler {
 
  private:
   // Helper function to compute the file offset for a given block number
-  size_t compute_file_offset(size_t block_num) const;
+  std::streamoff compute_file_offset(size_t block_num) const;
 
   // Helper function to get a block number for a given hash
   size_t get_block_number(const std::string& hash) const;
 
   // Helper function to get block size for a given hash
-  size_t get_block_size(const std::string& hash) const;
+  std::streamoff get_block_size(const std::string& hash) const;
 
   // Helper function to get block data for a given block number
   int get_block_data(size_t block_num, char* buffer, size_t buffer_size) const;
