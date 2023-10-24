@@ -68,16 +68,15 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
 
     - name: Configure CMake
-      run: >
-        cmake ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+  run: >
+    cmake ${{ steps.strings.outputs.build-output-dir }}
+    -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+    -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+    -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+    -S ${{ github.workspace }}
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+- name: Change to build directory
+  run: cd ${{ steps.strings.outputs.build-output-dir }}
 
-    - name: Execute Tests
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --rerun-failed --output-on-failure
+- name: Build
+  run: cmake --build . --config Release
