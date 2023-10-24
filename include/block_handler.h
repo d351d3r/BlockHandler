@@ -13,9 +13,9 @@ struct ResponseData {
 class BlockHandler {
  public:
   BlockHandler() = default;
-  
+
   // Special methods for testing purposes
-  size_t test_get_block_number(const std::string& hash) const {
+  std::streamoff test_get_block_number(const std::string& hash) const {
     return get_block_number(hash);
   }
 
@@ -23,8 +23,8 @@ class BlockHandler {
     return get_block_size(hash);
   }
 
-  int test_get_block_data(size_t block_num, char* buffer,
-                          size_t buffer_size) const {
+  std::streamoff test_get_block_data(std::streamoff block_num, char* buffer,
+                                     std::streamoff buffer_size) const {
     return get_block_data(block_num, buffer, buffer_size);
   }
 
@@ -42,20 +42,21 @@ class BlockHandler {
 
  private:
   // Helper function to compute the file offset for a given block number
-  std::streamoff compute_file_offset(size_t block_num) const;
+  std::streamoff compute_file_offset(std::streamoff block_num) const;
 
   // Helper function to get a block number for a given hash
-  size_t get_block_number(const std::string& hash) const;
+  std::streamoff get_block_number(const std::string& hash) const;
 
   // Helper function to get block size for a given hash
   std::streamoff get_block_size(const std::string& hash) const;
 
   // Helper function to get block data for a given block number
-  int get_block_data(size_t block_num, char* buffer, size_t buffer_size) const;
+  std::streamoff get_block_data(std::streamoff block_num, char* buffer,
+                                std::streamoff buffer_size) const;
 
-  static constexpr size_t MAX_BLOCKS = 100;
-  static constexpr size_t METADATA_SIZE = 16;
-  
+  static constexpr std::streamoff MAX_BLOCKS = 100;
+  static constexpr std::streamoff METADATA_SIZE = 16;
+
   // Constants
   static const inline std::string DEFAULT_BLOCK_DEVICE_FILENAME =
       "block_device.dat";
