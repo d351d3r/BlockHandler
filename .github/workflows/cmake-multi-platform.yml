@@ -54,12 +54,15 @@ jobs:
         source conan/bin/activate
         pip install conan
         conan profile detect
-
-    - name: Set reusable strings
-      id: strings
-      shell: bash
+    
+    - name: Install Conan Dependencies
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
+        conan install . --build=missing
+        - name: Set reusable strings
+          id: strings
+          shell: bash
+          run: |
+            echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_ENV"
 
     - name: Configure CMake
       run: >
