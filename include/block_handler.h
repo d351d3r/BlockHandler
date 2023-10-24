@@ -13,12 +13,13 @@ struct ResponseData {
 class BlockHandler {
  public:
   BlockHandler() = default;
+  
   // Special methods for testing purposes
   size_t test_get_block_number(const std::string& hash) const {
     return get_block_number(hash);
   }
 
-  size_t test_get_block_size(const std::string& hash) const {
+  std::streamoff test_get_block_size(const std::string& hash) const {
     return get_block_size(hash);
   }
 
@@ -27,19 +28,7 @@ class BlockHandler {
     return get_block_data(block_num, buffer, buffer_size);
   }
 
-  ResponseData fetch_block_data(const std::string& hash) const {
-    size_t block_num = get_block_number(hash);
-    size_t block_size = get_block_size(hash);
-    
-    std::vector<char> buffer(block_size);
-    int result = get_block_data(block_num, buffer.data(), block_size);
-    if (result != 0) {
-        // Error occurred while reading block data
-        return {"", ""};
-    }
-    return {hash, std::string(buffer.begin(), buffer.end())};
-}
-
+  ResponseData fetch_block_data(const std::string& hash) const;
 
   // Constructor that initializes the block device filename
   BlockHandler(const std::string& filename);
@@ -66,8 +55,10 @@ class BlockHandler {
 
   static constexpr size_t MAX_BLOCKS = 100;
   static constexpr size_t METADATA_SIZE = 16;
+  
   // Constants
-  static const inline std::string DEFAULT_BLOCK_DEVICE_FILENAME = "block_device.dat";
+  static const inline std::string DEFAULT_BLOCK_DEVICE_FILENAME =
+      "block_device.dat";
 
   // Member variable
   std::string block_device_filename = DEFAULT_BLOCK_DEVICE_FILENAME;
