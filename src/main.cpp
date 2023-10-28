@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
     return 0;  // Exit after creating the device
   }
 
-  std::vector<std::string> sample_hashes = {"sample_hash_1", "sample_hash_2",
-                                            "sample_hash_3"};
+  std::vector<std::string> sample_hashes = {"365a4a205c01386b16b3dc1eb2d89b5c2185247f", "83ad8510bbd3f22363d068e1c96f82fd0fcccd31",
+                                            "d3eba3caf81627832cbac3fcd8ad9fefc57b3398"};
 
   try {
     auto responses = handler.handle_client_request(sample_hashes);

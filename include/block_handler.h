@@ -3,8 +3,8 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 // Struct to represent the response data for a given hash
 struct ResponseData {
@@ -53,7 +53,8 @@ class BlockHandler {
   std::streamoff get_block_data(std::streamoff block_num, char* buffer,
                                 std::streamoff buffer_size) const;
 
-    std::unordered_map<std::string, std::pair<uint64_t, std::streamsize>> metadata_cache;
+  std::unordered_map<std::string, std::pair<uint64_t, std::streamsize>>
+      metadata_cache;
 
   // Constants
   static constexpr std::streamoff MAX_BLOCKS = 100;
