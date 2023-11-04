@@ -5,6 +5,7 @@
 #include <string_view>
 #include <vector>
 #include <unordered_map>
+#include <cstdint>
 
 // Struct to represent the response data for a given hash
 struct ResponseData {
